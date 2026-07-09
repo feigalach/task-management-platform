@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Environment variables - contain secrets/local config, never commit these
+.env
+.env.local
+
+# Build output
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS/editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# TypeScript build info
+*.tsbuildinfo
