@@ -2,7 +2,7 @@
 
 A task-management platform that cleanly separates **generic workflow rules**
 (apply to every task type, present and future) from **task-type-specific
-rules** (Procurement, Development, ...), using the **Strategy Pattern**.
+rules** (Procurement, Development, ...).
 
 ## Architecture at a glance
 
@@ -47,24 +47,6 @@ client/src/
 That's it. `TaskService`, controllers, routes, migrations, and the entire
 React client require **zero changes** — the client discovers the new type's
 statuses and required fields dynamically via `GET /api/task-types`.
-
-### Where each workflow rule (section 2) is enforced
-
-All in `TaskService`, generically:
-
-| Rule | Enforced by |
-|---|---|
-| 1 task ↔ 1 user | `assignedUserId` column + update on every status change |
-| Open/Closed, immutable when closed | `isClosed` flag, checked first in `changeStatus` |
-| Ascending int statuses | `status: number`, validated against handler's status list |
-| Forward moves sequential | `newStatus !== task.status + 1` check |
-| Backward always allowed | no restriction on `newStatus < task.status` |
-| Close only at final status | `handler.getFinalStatusNumber()` — **derived, not stored** |
-| Status change validates data + records next user | `handler.validateCustomFields()` + `assignedUserId` update, single `save()` |
-
-Note: the final status is intentionally **not** a column on `tasks` — it is
-a property of the task type, computed on demand from the handler, so there
-is no duplicated/denormalized storage.
 
 ## Prerequisites
 
